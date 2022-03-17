@@ -70,8 +70,130 @@ class Clock extends React.Component {
     }
 }
 
+class NameForm extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {value: ''}
+
+        // this.handleChange = this.handleChange.bind(this)  // use (e) => this.handle(e) can not type this
+        // this.handleSubmit = this.handleSubmit.bind(this)
+    }
+
+    handleChange(event) {
+        this.setState({value: event.target.value})
+    }
+
+    handleSubmit(event) {
+        alert('A name was submitted: ' + this.state.value)
+        event.preventDefault()
+    }
+
+    render() {
+        return (
+        <form onSubmit={(e) => this.handleSubmit(e)}>
+            <label>
+            Name:<input type="text" value={this.state.value} onChange={(e) => this.handleChange(e)} />
+            </label>
+            <input type="submit" value="Submit" />
+        </form>
+        )
+    }
+}
+
+class FlavorForm extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {value: 'coconut'}
+
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
+    }
+
+    handleChange(event) {
+        this.setState({value: event.target.value})
+    }
+
+    handleSubmit(event) {
+        alert('Your favorite flavor is: ' + this.state.value)
+        event.preventDefault()
+    }
+
+    render() {
+        return (
+        <form onSubmit={this.handleSubmit}>
+            <label>
+            Pick your favorite flavor:
+            <select value={this.state.value} onChange={this.handleChange}>
+                <option value="grapefruit">Grapefruit</option>
+                <option value="lime">Lime</option>
+                <option value="coconut">Coconut</option>
+                <option value="mango">Mango</option>
+            </select>
+            </label>
+            <input type="submit" value="Submit" />
+        </form>
+        )
+    }
+}
+
+
+class Reservation extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        isGoing: true,
+        numberOfGuests: 2,
+        testArray: [
+            {
+                text: 'dadadas'
+            },
+            {
+                text : 'qqeqeqtr'    
+            }
+        ]
+      }
+  
+      this.handleInputChange = this.handleInputChange.bind(this)
+    }
+  
+    handleInputChange(event, idx, subKey) {
+      const target = event.target
+      const name = target.name
+      const newArray = this.upDateSateArray(name, target.value, idx, subKey)
+
+      this.setState({
+        [name]: newArray
+      })
+    }
+
+    upDateSateArray (arrayKey, newValue, idx, subKey) {
+        let newArray = [...this.state[arrayKey]]
+        subKey ? newArray[idx][subKey] = newValue : newArray[idx] = newValue
+        return newArray
+    }
+    
+    showArray () {
+        console.log(this.state.testArray)
+    }
+
+    render() {
+      return (
+        <div>
+            {this.state.testArray.map((x, idx) => <input key={idx} type="text" name="testArray" value={x.text} onChange={(e) => this.handleInputChange(e, idx, 'text')}/>)}
+            <button onClick={() => this.showArray()}>show</button>
+        </div>
+      )
+    }
+  }
+
 
 const domContainer = document.querySelector('#test')
 const clockContainer = document.querySelector('#clock')
+const formContainer = document.querySelector('#form')
+const flavorFormContainer = document.querySelector('#FlavorForm')
+const mutipleInputContainer = document.querySelector('#mutipleInput')
 // ReactDOM.render(element, domContainer)
 ReactDOM.render(<Clock/>, clockContainer)
+ReactDOM.render(<NameForm/>, formContainer)
+ReactDOM.render(<FlavorForm/>, flavorFormContainer)
+ReactDOM.render(<Reservation/>, mutipleInputContainer)
