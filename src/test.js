@@ -139,52 +139,60 @@ class FlavorForm extends React.Component {
 
 class Reservation extends React.Component {
     constructor(props) {
-      super(props);
-      this.state = {
-        isGoing: true,
-        numberOfGuests: 2,
-        testArray: [
-            {
-                text: 'dadadas'
-            },
-            {
-                text : 'qqeqeqtr'    
-            }
-        ]
-      }
-  
-      this.handleInputChange = this.handleInputChange.bind(this)
+        super(props)
+        this.state = {
+            testArray: [
+                {
+                    text: 'dadadas'
+                },
+                {
+                    text : 'qqeqeqtr'    
+                }
+            ]
+        }
+
+        // this.handleInputChange = this.handleInputChange.bind(this) // use (e) => this.handle(e) can not type this
     }
-  
+
     handleInputChange(event, idx, subKey) {
-      const target = event.target
-      const name = target.name
-      const newArray = this.upDateSateArray(name, target.value, idx, subKey)
+        const target = event.target
+        const name = target.name
+        const newArray = this.upDateStateArray(name, target.value, idx, subKey)
 
-      this.setState({
-        [name]: newArray
-      })
+        this.setState({
+            [name]: newArray
+        })
     }
 
-    upDateSateArray (arrayKey, newValue, idx, subKey) {
+    arrayPush (arrayName, element) {
+        this.setState({
+            [arrayName]: [...this.state[arrayName], element]
+        })
+    }
+
+    upDateStateArray (arrayKey, newValue, idx, subKey) {
         let newArray = [...this.state[arrayKey]]
         subKey ? newArray[idx][subKey] = newValue : newArray[idx] = newValue
         return newArray
     }
-    
+
     showArray () {
         console.log(this.state.testArray)
     }
 
     render() {
-      return (
+        return (
         <div>
+            <div>
+                <button onClick={() => this.arrayPush('testArray', { text: '' })}>new Input</button>
+                <button onClick={() => this.arrayPush('testArray', { text: '' })}>delete Input</button>
+            </div>
             {this.state.testArray.map((x, idx) => <input key={idx} type="text" name="testArray" value={x.text} onChange={(e) => this.handleInputChange(e, idx, 'text')}/>)}
             <button onClick={() => this.showArray()}>show</button>
         </div>
-      )
+        )
     }
-  }
+}
 
 
 const domContainer = document.querySelector('#test')

@@ -278,17 +278,14 @@ var Reservation = function (_React$Component5) {
         var _this8 = _possibleConstructorReturn(this, (Reservation.__proto__ || Object.getPrototypeOf(Reservation)).call(this, props));
 
         _this8.state = {
-            isGoing: true,
-            numberOfGuests: 2,
             testArray: [{
                 text: 'dadadas'
             }, {
                 text: 'qqeqeqtr'
             }]
-        };
 
-        _this8.handleInputChange = _this8.handleInputChange.bind(_this8);
-        return _this8;
+            // this.handleInputChange = this.handleInputChange.bind(this) // use (e) => this.handle(e) can not type this
+        };return _this8;
     }
 
     _createClass(Reservation, [{
@@ -296,13 +293,18 @@ var Reservation = function (_React$Component5) {
         value: function handleInputChange(event, idx, subKey) {
             var target = event.target;
             var name = target.name;
-            var newArray = this.upDateSateArray(name, target.value, idx, subKey);
+            var newArray = this.upDateStateArray(name, target.value, idx, subKey);
 
             this.setState(_defineProperty({}, name, newArray));
         }
     }, {
-        key: 'upDateSateArray',
-        value: function upDateSateArray(arrayKey, newValue, idx, subKey) {
+        key: 'arrayPush',
+        value: function arrayPush(arrayName, element) {
+            this.setState(_defineProperty({}, arrayName, [].concat(_toConsumableArray(this.state[arrayName]), [element])));
+        }
+    }, {
+        key: 'upDateStateArray',
+        value: function upDateStateArray(arrayKey, newValue, idx, subKey) {
             var newArray = [].concat(_toConsumableArray(this.state[arrayKey]));
             subKey ? newArray[idx][subKey] = newValue : newArray[idx] = newValue;
             return newArray;
@@ -320,6 +322,24 @@ var Reservation = function (_React$Component5) {
             return React.createElement(
                 'div',
                 null,
+                React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                        'button',
+                        { onClick: function onClick() {
+                                return _this9.arrayPush('testArray', { text: '' });
+                            } },
+                        'new Input'
+                    ),
+                    React.createElement(
+                        'button',
+                        { onClick: function onClick() {
+                                return _this9.arrayPush('testArray', { text: '' });
+                            } },
+                        'delete Input'
+                    )
+                ),
                 this.state.testArray.map(function (x, idx) {
                     return React.createElement('input', { key: idx, type: 'text', name: 'testArray', value: x.text, onChange: function onChange(e) {
                             return _this9.handleInputChange(e, idx, 'text');
